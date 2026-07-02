@@ -1,2 +1,370 @@
-# smart-vibration-hand-glove
-Industrial smart glove for automotive harness lock verification using STM32, MPU6050, PVDF sensor, FFT analysis, and sensor fusion.
+# Smart-vibration-detection-gloves
+### Sensor Fusion + FFT-Based Vibration Analysis using STM32 Blue Pill
+
+> An embedded systems project developed to verify automotive wiring harness lock installation using motion sensing, vibration analysis, digital signal processing, and sensor fusion.
+
+---
+
+# Project Overview
+
+In automotive manufacturing, ensuring that every wiring harness lock is properly installed is essential for product quality and operator safety. Traditional inspection methods rely heavily on manual verification, making them susceptible to human error, inconsistent inspections, and production delays.
+
+This project proposes an intelligent wearable system capable of automatically validating lock installation by analyzing the vibration signature produced during the locking process.
+
+Unlike sound-based inspection methods, this system combines motion detection and vibration sensing to identify genuine locking events while reducing false detections caused by random hand movements.
+
+The project integrates:
+
+- STM32 Blue Pill (STM32F103C8)
+- Arduino IDE
+- MPU6050 Motion Sensor
+- PVDF Piezoelectric Vibration Sensor
+- WS2812B RGB LED
+- FFT Signal Processing
+- EEPROM Calibration Storage
+- Sensor Fusion Logic
+- Event Driven State Machine
+
+---
+
+# Project Demonstration
+
+<p align="center">
+<img src="images/prototype.jpg" width="700">
+</p>
+
+---
+
+# Motivation
+
+Automotive wiring harnesses contain locking connectors that must be fully engaged during assembly.
+
+Incomplete locking may result in:
+
+- Electrical failures
+- Vehicle malfunction
+- Expensive rework
+- Safety issues
+
+The objective of this project is to provide real-time verification immediately after the operator installs the connector.
+
+---
+
+# Working Principle
+
+Instead of continuously monitoring everything, the system operates using an event-driven state machine.
+
+```
+Idle
+   │
+   ▼
+Motion Detected
+   │
+   ▼
+Impact Detected
+   │
+   ▼
+Capture Vibration
+   │
+   ▼
+FFT Analysis
+   │
+   ▼
+Golden Template Matching
+   │
+   ▼
+Pass / Fail Decision
+```
+
+---
+
+# Hardware Used
+
+| Component | Purpose |
+|------------|---------|
+| STM32 Blue Pill | Main Controller |
+| MPU6050 | Detects hand movement |
+| PVDF Piezo Sensor | Captures lock impact vibration |
+| WS2812B RGB LED | Visual indication |
+| EEPROM | Stores calibration template |
+| USB | Programming and power |
+| Glove Platform | Wearable prototype |
+
+---
+
+# Sensor Fusion
+
+The project combines two independent sensors.
+
+## MPU6050
+
+Detects
+
+- Hand movement
+- Locking motion
+
+## PVDF Piezo Sensor
+
+Detects
+
+- Mechanical vibration
+- Lock impact signature
+
+Only when:
+
+Motion ✔
+
+AND
+
+Impact ✔
+
+does the system proceed to FFT analysis.
+
+This significantly reduces false triggers compared to using only one sensor.
+
+---
+
+# Calibration
+
+Before operation, the system performs calibration.
+
+1. Five correct lock installations are recorded.
+2. FFT is performed on each vibration signal.
+3. The spectra are averaged.
+4. The averaged spectrum becomes the Golden Template.
+5. The template is stored permanently inside EEPROM.
+
+```
+Good Lock 1
+Good Lock 2
+Good Lock 3
+Good Lock 4
+Good Lock 5
+
+↓
+
+FFT
+
+↓
+
+Average
+
+↓
+
+Golden Template
+
+↓
+
+EEPROM
+```
+
+---
+
+# FFT-Based Verification
+
+After every detected impact,
+
+the system
+
+- captures 64 vibration samples
+- performs Fast Fourier Transform
+- extracts frequency-domain characteristics
+- compares them with the stored Golden Template
+- calculates similarity
+- decides PASS or FAIL
+
+---
+
+# State Machine
+
+```
+State 0
+Idle
+
+↓
+
+State 1
+Motion Detection
+
+↓
+
+State 2
+Impact Detection
+
+↓
+
+State 3
+FFT Analysis
+
+↓
+
+Decision
+
+↓
+
+Back to Idle
+```
+
+---
+
+# Visual Feedback
+
+🟢 Green
+
+Correct lock installation
+
+🔴 Red
+
+Incorrect or mismatched vibration signature
+
+---
+
+# Software Features
+
+- Sensor Fusion
+- FFT Analysis
+- EEPROM Storage
+- Golden Template Matching
+- Event Driven Processing
+- State Machine Architecture
+- Real-Time Feedback
+
+---
+
+# Repository Structure
+
+```
+Industrial-Smart-Glove/
+
+│
+
+├── Firmware/
+│      STM32 Source Code
+
+├── Images/
+│      Prototype Images
+│      Circuit Images
+│      Calibration Images
+
+├── Documents/
+│      Project Report
+│      Presentation
+
+├── Circuit/
+│      Circuit Diagram
+
+├── README.md
+```
+
+---
+
+
+# Prototype Images
+
+### Complete Prototype
+
+<img src="images/prototype.jpg" width="700">
+
+---
+
+### Circuit Connections
+
+<img src="images/circuit.jpg" width="700">
+
+---
+
+# Real-World Engineering Challenges
+
+Although the proposed algorithm performed well conceptually, practical implementation revealed several mechanical limitations.
+
+## 1. Flexible Glove Material
+
+The glove is made of fabric.
+
+Unlike a rigid mechanical structure, fabric continuously deforms during operation.
+
+This causes the relative position of the sensors to change every time the glove is worn.
+
+---
+
+## 2. Vibration Absorption
+
+The PVDF sensor measures vibration generated by the harness lock.
+
+However,
+
+the fabric absorbs a significant portion of the vibration before it reaches the sensor.
+
+This reduces repeatability of the measured vibration signature.
+
+---
+
+## 3. Sensor Mounting
+
+Repeated wearing and removal of the glove causes
+
+- sensor movement
+- loose wiring
+- inconsistent contact
+
+leading to variation in measured signals.
+
+---
+
+## 4. Variable Thresholds
+
+Because the glove changes shape with every use,
+
+fixed thresholds cannot perfectly represent all operating conditions.
+
+This introduces variability during real-world measurements.
+
+---
+
+# Key Observation
+
+The signal-processing algorithm itself is effective.
+
+The primary limitations originate from the wearable mechanical platform rather than the embedded software.
+
+If the same sensing system were mounted on a rigid industrial fixture or directly on the connector assembly,
+
+the vibration measurements would be significantly more repeatable.
+
+---
+
+# Future Improvements
+
+- Flexible PCB integration
+- Custom 3D printed sensor housing
+- Silicone vibration coupling
+- Wireless BLE communication
+- TinyML-based classification
+- Adaptive thresholding
+- Multi-class connector recognition
+- Rechargeable battery operation
+- Industrial enclosure
+- Mobile dashboard
+
+---
+
+# Skills Demonstrated
+
+- Embedded Systems
+- Digital Signal Processing
+- FFT
+- Sensor Fusion
+- EEPROM
+- State Machines
+- Industrial Automation
+- Signal Analysis
+
+---
+
+# Author
+
+**Aishwarya R**
+
+Electronics & communication engineering student
+
+GitHub: https://github.com/AishDHub
