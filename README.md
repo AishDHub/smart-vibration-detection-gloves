@@ -29,7 +29,7 @@ The project integrates:
 
 ## Project Demonstration
 
-![Project Demonstration](Images/Protype.jpeg)
+![Project Demonstration](Images/Prototype.jpeg)
 
 ---
 
