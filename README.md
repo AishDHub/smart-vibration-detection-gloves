@@ -251,7 +251,7 @@ Industrial-Smart-Glove/
 ├── Circuit/
 │      Circuit Diagram
 
-├── README.md
+└── README.md
 ```
 
 ---
