@@ -29,9 +29,7 @@ The project integrates:
 
 # Project Demonstration
 
-<p align="center">
-<img src="images/prototype.jpg" width="700">
-</p>
+ ![Project Demonstration](Images/Protype.jpeg)
 
 ---
 
