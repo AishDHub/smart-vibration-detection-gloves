@@ -261,13 +261,13 @@ Industrial-Smart-Glove/
 
 ### Complete Prototype
 
-<img src="images/prototype.jpg" width="700">
+![Complete Prototype](Images/complete_setup.jpeg)
 
 ---
 
-### Circuit Connections
+### Calibration Images
 
-<img src="images/circuit.jpg" width="700">
+![Calibration Images](Images/calibration_image.jpeg)
 
 ---
 
