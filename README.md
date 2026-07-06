@@ -240,16 +240,13 @@ Industrial-Smart-Glove/
 │      STM32 Source Code
 
 ├── Images/
-│      Prototype Images
-│      Circuit Images
-│      Calibration Images
+│      Prototype_image
+│      Complete_setup
+│      Calibration_image
 
 ├── Documents/
 │      Project Report
 │      Presentation
-
-├── Circuit/
-│      Circuit Diagram
 
 └── README.md
 ```
